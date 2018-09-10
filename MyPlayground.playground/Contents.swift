@@ -68,17 +68,26 @@ import Cocoa
 //i = num*9
 //print(i)
 
-//MARK: 6,7단 구현 - 반복문
-//6단
-var num = 6
-var i = 1
-while i < 10 {
-    print(num*i)
-    i = i + 1
-}
+////MARK: 6,7단 구현 - 반복문
+////6단
+//var num = 6
+//var i = 1
+//while i < 10 {
+//    print(num*i)
+//    i = i + 1
+//}
+//
+////7단
+//num = 7
+//for i in 1...9 {
+//    print(num*i)
+//}
 
-//7단
-num = 7
+//MARK: 8,9단 구현 - 조건문과 2중반복문
 for i in 1...9 {
-    print(num*i)
+    if i % 2 == 1 {
+        for j in 1...9 {
+            print("\(i) * \(j) = \(i*j)")
+        }
+    }
 }
