@@ -26,45 +26,59 @@ import Cocoa
 //print("\(3*8)")
 //print("\(3*9)")
 
-//MARK: 4, 5단 구현 - 변수
-//4단
-var num = 4
-var i = num*1
-print(i)
-i = num*2
-print(i)
-i = num*3
-print(i)
-i = num*4
-print(i)
-i = num*5
-print(i)
-i = num*6
-print(i)
-i = num*7
-print(i)
-i = num*8
-print(i)
-i = num*9
-print(i)
-//5단
-num = 5
-i = num*1
-print(i)
-i = num*2
-print(i)
-i = num*3
-print(i)
-i = num*4
-print(i)
-i = num*5
-print(i)
-i = num*6
-print(i)
-i = num*7
-print(i)
-i = num*8
-print(i)
-i = num*9
-print(i)
+////MARK: 4, 5단 구현 - 변수
+////4단
+//var num = 4
+//var i = num*1
+//print(i)
+//i = num*2
+//print(i)
+//i = num*3
+//print(i)
+//i = num*4
+//print(i)
+//i = num*5
+//print(i)
+//i = num*6
+//print(i)
+//i = num*7
+//print(i)
+//i = num*8
+//print(i)
+//i = num*9
+//print(i)
+////5단
+//num = 5
+//i = num*1
+//print(i)
+//i = num*2
+//print(i)
+//i = num*3
+//print(i)
+//i = num*4
+//print(i)
+//i = num*5
+//print(i)
+//i = num*6
+//print(i)
+//i = num*7
+//print(i)
+//i = num*8
+//print(i)
+//i = num*9
+//print(i)
 
+//MARK: 6,7단 구현 - 반복문
+//6단
+var num = 6
+var i = 1
+while i < 10 {
+    print(num*i)
+    i = i + 1
+}
+
+//7단
+num = 7
+for i in 1...9 {
+    print(num*i)
+}
