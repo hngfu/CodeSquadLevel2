@@ -83,11 +83,33 @@ import Cocoa
 //    print(num*i)
 //}
 
-//MARK: 8,9단 구현 - 조건문과 2중반복문
-for i in 1...9 {
-    if i % 2 == 1 {
-        for j in 1...9 {
-            print("\(i) * \(j) = \(i*j)")
-        }
+////MARK: 8,9단 구현 - 조건문과 2중반복문
+//for i in 1...9 {
+//    if i % 2 == 1 {
+//        for j in 1...9 {
+//            print("\(i) * \(j) = \(i*j)")
+//        }
+//    }
+//}
+
+//MARK: 마무리하기 - 배열과 서브루틴
+
+var numbers = Array(1...9)
+
+//
+//for i in numbers {
+//    numbers[i - 1] = numbers[i - 1] * 2
+//}
+//for i in numbers {
+//    print(i)
+//}
+
+func gugu(dan: Int) {
+    for i in numbers {
+        print("\(dan) * \(i) = \(dan * i)")
     }
+}
+
+for i in 2...9 {
+    gugu(dan: i)
 }
