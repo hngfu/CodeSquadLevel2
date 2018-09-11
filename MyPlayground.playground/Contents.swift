@@ -3,7 +3,7 @@
 import Cocoa
 
 
-////MARK: - 2, 3단 구현 - 계산과 출력
+//////MARK: - 2, 3단 구현 - 계산과 출력
 //var str = "Hello, IOS World"
 ////2단
 //print("\(2*1)")
@@ -25,8 +25,8 @@ import Cocoa
 //print("\(3*7)")
 //print("\(3*8)")
 //print("\(3*9)")
-
-////MARK: 4, 5단 구현 - 변수
+//
+//////MARK: 4, 5단 구현 - 변수
 ////4단
 //var num = 4
 //var i = num*1
@@ -67,13 +67,13 @@ import Cocoa
 //print(i)
 //i = num*9
 //print(i)
-
-////MARK: 6,7단 구현 - 반복문
+//
+//////MARK: 6,7단 구현 - 반복문
 ////6단
-//var num = 6
-//var i = 1
-//while i < 10 {
-//    print(num*i)
+//var number1 = 6
+//var m = 1
+//while m < 10 {
+//    print(number1 * i)
 //    i = i + 1
 //}
 //
@@ -82,8 +82,8 @@ import Cocoa
 //for i in 1...9 {
 //    print(num*i)
 //}
-
-////MARK: 8,9단 구현 - 조건문과 2중반복문
+//
+//////MARK: 8,9단 구현 - 조건문과 2중반복문
 //for i in 1...9 {
 //    if i % 2 == 1 {
 //        for j in 1...9 {
@@ -93,9 +93,9 @@ import Cocoa
 //}
 
 //MARK: 마무리하기 - 배열과 서브루틴
-
-var numbers = Array(1...9)
-
+//
+//var numbers = Array(1...9)
+//
 //
 //for i in numbers {
 //    numbers[i - 1] = numbers[i - 1] * 2
@@ -104,12 +104,16 @@ var numbers = Array(1...9)
 //    print(i)
 //}
 
-func gugu(dan: Int) {
+func gugu(dan: Int) -> [Int]{
+    var numbers = Array(1...9)
+    
     for i in numbers {
-        print("\(dan) * \(i) = \(dan * i)")
+        numbers[i - 1] = numbers[i - 1] * dan
     }
+    
+    return numbers
 }
 
-for i in 2...9 {
-    gugu(dan: i)
-}
+gugu(dan: 5)
+
+
