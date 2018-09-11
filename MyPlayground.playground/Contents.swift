@@ -115,5 +115,3 @@ func gugu(dan: Int) -> [Int]{
 }
 
 gugu(dan: 5)
-
-
