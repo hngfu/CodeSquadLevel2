@@ -1,3 +1,4 @@
+
 //
 //  main.swift
 //  UnitConverter
@@ -8,32 +9,33 @@
 
 import Foundation
 
-//센치미터(cm)단위를 미터(m)단위로 바꿔주는 함수입니다.
-func centimeterToMeter(cm: Int) -> Float {
-    return Float(cm)/100
-}
-
-//미터(m)단위를 센치미터(cm)단위로 바꿔주는 함수입니다.
-func meterToCentimeter(m: Float) -> Int {
-    return Int(m*100)
+//센치미터(cm)단위를 특정단위로 바꿔주는 함수입니다.
+func convertCentimeterToUnit(m: Double, to unitValue: Double) -> Double {
+    return m * unitValue
 }
 
 //MARK: 길이 단위 변환 함수
 //변환할 값을 집어넣으면 변환된 값이 나오게 만들었습니다.
 func unitConverter(_ willConvertData: String) -> String {
-    let data = willConvertData
-    let startPointOfUnit = data.index(of: "c") ?? data.index(of: "m")
-    let numberOfData = String(data.prefix(upTo: startPointOfUnit!))
-    let unitOfData = String(data.suffix(from: startPointOfUnit!))
-
-    switch unitOfData {
-    case "cm":
-        return "\(centimeterToMeter(cm: Int(numberOfData)!))m"
-    case "m":
-        return "\(meterToCentimeter(m: Float(numberOfData)!))cm"
-    default:
-        return "m와 cm만 단위 변환 가능합니다."
+    let convertingData = willConvertData.split(separator: " ").map({String($0)})
+    let startPointOfUnit = convertingData[0].index(of: "i") ?? convertingData[0].index(of: "m") ?? convertingData[0].index(of: "c")
+    let numberOfData = Double(convertingData[0].prefix(upTo: startPointOfUnit!))!
+    let unitBefore = String(convertingData[0].suffix(from: startPointOfUnit!))
+    var unitAfter = "doNotInput"
+    if convertingData.count == 2 {
+        unitAfter = convertingData[1]
     }
+    let unitInfo = ["cm":100, "m":1, "inch":39.370079]
+    
+//    let unitKey = ["cm","m","inch"]
+//    if unitKey.contains(unitAfter) && unitKey.contains(unitBefore) {
+//        return "지원하지 않는 단위입니다. 단위를 확인해 주세요."
+//    }
+    
+    let defaultNumber = numberOfData / unitInfo[unitBefore]!
+    
+    return "\(convertCentimeterToUnit(m: defaultNumber, to: unitInfo[unitAfter]!))\(unitAfter)"
+    
 }
 
 if let data = readLine() {
@@ -41,4 +43,10 @@ if let data = readLine() {
 } else {
     print("입력하신 값을 확인해주세요.")
 }
+
+
+
+
+
+
 
