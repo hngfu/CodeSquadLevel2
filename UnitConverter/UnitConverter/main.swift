@@ -15,9 +15,9 @@ func convertMeterToUnit(m: Double, to unitValue: Double) -> Double {
 }
 
 //예외처리 부분 함수입니다.
-func isSupport(_ unitBeforeConvert:String, _ unitAfterConvert:String) -> Bool {
+func isSupportable(_ unitBeforeConvert:String, _ unitAfterConvert:String) -> Bool {
     let unitKey = ["cm","m","inch"]
-    if !unitKey.contains(unitAfterConvert) || !unitKey.contains(unitBeforeConvert){
+    if !(unitKey.contains(unitAfterConvert) && unitKey.contains(unitBeforeConvert)){
         return false
     }
     return true
@@ -38,7 +38,7 @@ func unitConverter(_ willConvertData: String) -> String {
         }
     }
     
-    //m와 cm는 변환할 단위가 없어도 되게 만들어 줬습니다.
+    //m와 cm는 변환할 단위가 없어도 변환 가능하게 만들어 줬습니다.
     var unitAfterConvert = ""
     if convertingData.count == 2 {
         unitAfterConvert = convertingData[1]
@@ -52,9 +52,9 @@ func unitConverter(_ willConvertData: String) -> String {
     let unitInfo = ["cm" : 100, "m" : 1, "inch" : 39.370079]
     
     //예외처리해주고 알맞은 값은 단위를 변환시켜줍니다.
-    if isSupport(unitBeforeConvert, unitAfterConvert) {
-        let defaultNumber = Double(numberOfData)! / unitInfo[unitBeforeConvert]!
-        return "\(convertMeterToUnit(m: defaultNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
+    if isSupportable(unitBeforeConvert, unitAfterConvert) {
+        let defaultUnitNumber = Double(numberOfData)! / unitInfo[unitBeforeConvert]!
+        return "\(convertMeterToUnit(m: defaultUnitNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
     } else {
         return "지원하지 않는 단위입니다. 단위를 확인해 주세요."
     }
