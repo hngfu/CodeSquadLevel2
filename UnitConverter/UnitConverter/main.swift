@@ -12,18 +12,20 @@ import Foundation
 //기본단위(m)를 특정단위로 바꿔주는 함수입니다.
 func converting(what preparedValue: [String]) -> String {
     //단위의 정보가 담겨있는 곳 입니다.
-    let unitInfo = ["cm" : 100, "m" : 1.0, "inch" : 39.370079, "yard" : 1.093613]
+    let unitInfo = ["cm" : 100, "m" : 1.0, "inch" : 39.370079, "yard" : 1.093613, "kg" : 1, "g" : 1000, "oz" : 35.273962, "lb" :
+        2.204623]
     //어떤 값이든 들오면 미터(m)단위로 환산해주고 이제 거기서 다른 단위로 환산해 줍니다.
-    if let preparedNumber = Double(preparedValue[0]), let verifiedUnitBeforeConvert = unitInfo[preparedValue[1]], let verifiedUnitAfterConvert = unitInfo[preparedValue[2]]{
-        let defaultUnitNumber = preparedNumber / verifiedUnitBeforeConvert
-        return "\(defaultUnitNumber * verifiedUnitAfterConvert)\(preparedValue[2])"
+    guard let preparedNumber = Double(preparedValue[0]), let verifiedUnitBeforeConvert = unitInfo[preparedValue[1]], let verifiedUnitAfterConvert = unitInfo[preparedValue[2]] else {
+        return "값을 확인해 주세요."
     }
-    return "값을 확인해 주세요."
+    
+    let defaultUnitNumber = preparedNumber / verifiedUnitBeforeConvert
+    return "\(defaultUnitNumber * verifiedUnitAfterConvert)\(preparedValue[2])"
 }
 
 //예외처리 부분 함수입니다.
 func supportsUnit(_ unitBeforeConvert:String, _ unitAfterConvert:String) -> Bool {
-    let unitKey = ["cm","m","inch","yard"]
+    let unitKey = ["cm","m","inch","yard","kg","g","oz","lb"]
     if !(unitKey.contains(unitAfterConvert) && unitKey.contains(unitBeforeConvert)){
         return false
     }
@@ -93,17 +95,3 @@ while true {
         print("입력하신 값을 확인해주세요.")
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
