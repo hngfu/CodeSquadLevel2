@@ -10,7 +10,7 @@
 import Foundation
 
 //기본단위(m)를 특정단위로 바꿔주는 함수입니다.
-func convertCentimeterToUnit(m: Double, to unitValue: Double) -> Double {
+func convertMeterToUnit(m: Double, to unitValue: Double) -> Double {
     return m * unitValue
 }
 
@@ -44,8 +44,7 @@ func unitConverter(_ willConvertData: String) -> String {
     }
     
     let defaultNumber = Double(numberOfData)! / unitInfo[unitBeforeConvert]!
-    
-    return "\(convertCentimeterToUnit(m: defaultNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
+    return "\(convertMeterToUnit(m: defaultNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
 }
 
 if let data = readLine() {
@@ -53,6 +52,19 @@ if let data = readLine() {
 } else {
     print("입력하신 값을 확인해주세요.")
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
