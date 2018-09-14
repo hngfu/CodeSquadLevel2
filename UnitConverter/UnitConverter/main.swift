@@ -27,12 +27,14 @@ func unitConverter(_ willConvertData: String) -> String {
             unitBeforeConvert += String(i)
         }
     }
-    
-    var unitAfterConvert = "doNotInput"
+    var unitAfterConvert = "cm"
     if convertingData.count == 2 {
         unitAfterConvert = convertingData[1]
+    } else if convertingData.count == 1 && unitBeforeConvert == "cm" {
+        unitAfterConvert.removeFirst()
     }
-    let unitInfo = ["cm":100, "m":1, "inch":39.370079]
+    
+    let unitInfo = ["cm" : 100, "m" : 1, "inch" : 39.370079]
     
     
     //예외처리 부분
@@ -43,15 +45,7 @@ func unitConverter(_ willConvertData: String) -> String {
     
     let defaultNumber = Double(numberOfData)! / unitInfo[unitBeforeConvert]!
     
-    //m와 cm는 변환할 단위 입력 안해되게 구현
-    if unitBeforeConvert == "m" && unitAfterConvert == "doNotInput" {
-        return "\(convertCentimeterToUnit(m: defaultNumber, to: unitInfo["cm"]!))cm"
-    } else if unitBeforeConvert == "cm" && unitAfterConvert == "doNotInput" {
-        return "\(convertCentimeterToUnit(m: defaultNumber, to: unitInfo["m"]!))m"
-    } else {
-        return "\(convertCentimeterToUnit(m: defaultNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
-    }
-    
+    return "\(convertCentimeterToUnit(m: defaultNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
 }
 
 if let data = readLine() {
