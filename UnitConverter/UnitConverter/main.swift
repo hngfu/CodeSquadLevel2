@@ -14,8 +14,18 @@ func convertMeterToUnit(m: Double, to unitValue: Double) -> Double {
     return m * unitValue
 }
 
+//예외처리 부분 함수입니다.
+func isSupport(_ unitBeforeConvert:String, _ unitAfterConvert:String) -> Bool {
+    let unitKey = ["cm","m","inch"]
+    if !unitKey.contains(unitAfterConvert) || !unitKey.contains(unitBeforeConvert){
+        return false
+    }
+    return true
+}
+
 //MARK: 인치 길이 변환과 예외 처리
 func unitConverter(_ willConvertData: String) -> String {
+    //숫자부분 단위부분을 분리시켜 줍니다.
     let convertingData = willConvertData.split(separator: " ").map({String($0)})
     let rangeOfNumber = ["0","1","2","3","4","5","6","7","8","9","."]
     var numberOfData = ""
@@ -27,24 +37,28 @@ func unitConverter(_ willConvertData: String) -> String {
             unitBeforeConvert += String(i)
         }
     }
-    var unitAfterConvert = "cm"
+    
+    //m와 cm는 변환할 단위가 없어도 되게 만들어 줬습니다.
+    var unitAfterConvert = ""
     if convertingData.count == 2 {
         unitAfterConvert = convertingData[1]
     } else if convertingData.count == 1 && unitBeforeConvert == "cm" {
-        unitAfterConvert.removeFirst()
+        unitAfterConvert = "m"
+    } else if convertingData.count == 1 && unitBeforeConvert == "m" {
+        unitAfterConvert = "cm"
     }
     
+    //단위의 정보가 담겨있는 곳 입니다.
     let unitInfo = ["cm" : 100, "m" : 1, "inch" : 39.370079]
     
-    
-    //예외처리 부분
-    let unitKey = ["cm","m","inch"]
-    if (!unitKey.contains(unitAfterConvert) || !unitKey.contains(unitBeforeConvert)) && unitAfterConvert != "doNotInput" {
+    //예외처리해주고 알맞은 값은 단위를 변환시켜줍니다.
+    if isSupport(unitBeforeConvert, unitAfterConvert) {
+        let defaultNumber = Double(numberOfData)! / unitInfo[unitBeforeConvert]!
+        return "\(convertMeterToUnit(m: defaultNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
+    } else {
         return "지원하지 않는 단위입니다. 단위를 확인해 주세요."
     }
     
-    let defaultNumber = Double(numberOfData)! / unitInfo[unitBeforeConvert]!
-    return "\(convertMeterToUnit(m: defaultNumber, to: unitInfo[unitAfterConvert]!))\(unitAfterConvert)"
 }
 
 if let data = readLine() {
