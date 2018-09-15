@@ -9,87 +9,96 @@
 
 import Foundation
 
-//기본단위(m)를 특정단위로 바꿔주는 함수입니다.
-func converting(what preparedValue: [String]) -> String {
-    //단위의 정보가 담겨있는 곳 입니다.
-    let unitInfo = ["cm" : 100, "m" : 1.0, "inch" : 39.370079, "yard" : 1.093613, "kg" : 1, "g" : 1000, "oz" : 35.273962, "lb" :
-        2.204623]
-    //어떤 값이든 들오면 미터(m)단위로 환산해주고 이제 거기서 다른 단위로 환산해 줍니다.
-    guard let preparedNumber = Double(preparedValue[0]), let verifiedUnitBeforeConvert = unitInfo[preparedValue[1]], let verifiedUnitAfterConvert = unitInfo[preparedValue[2]] else {
-        return "값을 확인해 주세요."
-    }
+func convertUnit(valueToConvert:String) -> String{
+    let seperatedValueFromSpace = seperate(blankValue: valueToConvert)
+    let completelySeperatedValue = seperateInto(numberAndUnit: seperatedValueFromSpace[0])
     
-    let defaultUnitNumber = preparedNumber / verifiedUnitBeforeConvert
-    return "\(defaultUnitNumber * verifiedUnitAfterConvert)\(preparedValue[2])"
-}
-
-//예외처리 부분 함수입니다.
-func supportsUnit(_ unitBeforeConvert:String, _ unitAfterConvert:String) -> Bool {
-    let unitKey = ["cm","m","inch","yard","kg","g","oz","lb"]
-    if !(unitKey.contains(unitAfterConvert) && unitKey.contains(unitBeforeConvert)){
-        return false
+    guard let numberPart = Double(completelySeperatedValue[0]) else {return "입력하신 값을 확인해주세요."}
+    let beforeConvert = completelySeperatedValue[1]
+    var AfterConvert = ""
+    
+    if !supports(unit: beforeConvert) {return "지원하지 않는 단위입니다. 확인해주세요."}
+    if seperatedValueFromSpace.count == 1{
+        AfterConvert = addDefaultUnit(unitBeforeConvert: beforeConvert)
+    } else {
+        AfterConvert = seperatedValueFromSpace[1]
     }
-    return true
+    if !supports(unit: AfterConvert) {return "지원하지 않는 단위입니다. 확인해주세요."}
+    
+    return convertingUnit(numberPart, beforeConvert, AfterConvert)
 }
 
-//숫자부분과 단위부분을 분리시켜주는 함수입니다.
-func separateSection(of willSeparateValue:String) -> [String] {
-    let separatedValue = willSeparateValue.split(separator: " ").map({String($0)})
-    let rangeOfNumber = ["0","1","2","3","4","5","6","7","8","9","."]
-    var numberSection = ""
-    var unitBeforeConvert = ""
-    for i in separatedValue[0] {
-        if rangeOfNumber.contains(String(i)) {
-            numberSection += String(i)
-        } else {
-            unitBeforeConvert += String(i)
+//ex) 입력: "12cm m" -> 출력: ["12cm","m"], 입력: "12cm" -> 출력: ["12cm"]
+func seperate(blankValue:String) -> [String]{
+    return blankValue.split(separator: " ").map({String($0)})
+}
+
+//ex) 입력: "12cm" -> 출력: ["12","cm"]
+func seperateInto(numberAndUnit:String) -> [String]{
+    var numberPart = ""
+    var unitPart = ""
+    
+    for i in numberAndUnit {
+        switch i {
+        case "0","1","2","3","4","5","6","7","8","9",".":
+            numberPart.append(i)
+        default:
+            unitPart.append(i)
         }
     }
     
-    if separatedValue.count == 2 {
-        return [numberSection,unitBeforeConvert,separatedValue[1]]
-    }
-    return [numberSection,unitBeforeConvert]
+    return [numberPart,unitPart]
 }
 
-//변환할 단위를 입력하지 않은 경우의 처리
-func processWithoutUnitsToConvert(valueWithoutUnitsToConvert:[String]) -> [String] {
-    var valueToProcess = valueWithoutUnitsToConvert
-    if valueToProcess[1] == "cm" {
-        valueToProcess.append("m")
-    } else if valueToProcess[1] == "m" {
-        valueToProcess.append("cm")
-    } else if valueToProcess[1] == "yard" {
-        valueToProcess.append("m")
-    }
-    return valueToProcess
+//MARK: 단위 추가 (1/2)
+//ex) 입력: "cm" -> 출력: true, 입력: "hngfu" -> false
+func supports(unit:String) -> Bool{
+    let supportedUnits = ["cm","m","inch","yard","kg","g","oz","lb"]
+    return supportedUnits.contains(unit)
 }
 
+//ex) 입력: "cm"(바뀌기 전 단위 입력하면) -> 출력: "m"(바꿀 단위 변수로 return 됩니다.)
+func addDefaultUnit(unitBeforeConvert:String) -> String{
+    switch unitBeforeConvert {
+    case "cm":
+        return "m"
+    case "m":
+        return "cm"
+    case "yard":
+        return "m"
+    default:
+        return unitBeforeConvert
+    }
+}
 
-//MARK: 인치 길이 변환과 예외 처리
-func convertUnit(_ willConvertValue: String) -> String {
-    //숫자부분 단위부분을 분리시켜 줍니다.
-    let seperatedValues = separateSection(of: willConvertValue)
+//MARK: 단위 추가 (2/2) 단위값 추가시 '길이'는 'm'가 중심값, '무게'는 'kg'가 중심값
+//ex) 입력: (12,"cm","m") -> 출력: "0.12m", 입력: (12,"m","yard") -> 출력: "13.1233yard"
+func convertingUnit(_ numberPart:Double, _ beforeConvert:String, _ AfterConvert:String) -> String{
+    let unitInfo = ["cm" : 100,
+                    "m" : 1.0,
+                    "inch" : 39.370079,
+                    "yard" : 1.093613,
+                    "kg" : 1,
+                    "g" : 1000,
+                    "oz" : 35.273962,
+                    "lb" : 2.204623]
     
-    //m와 cm는 변환할 단위가 없어도 변환 가능하게 만들어 줬습니다.
-    let preparedValue = processWithoutUnitsToConvert(valueWithoutUnitsToConvert: seperatedValues)
-    
-    //예외처리해주고 알맞은 값은 단위를 변환시켜줍니다.
-    if supportsUnit(preparedValue[1], preparedValue[2]) {
-        return converting(what: preparedValue)
-    } else {
-        return "지원하지 않는 단위입니다. 단위를 확인해 주세요."
+    guard let nonOptionalBeforeConvert = unitInfo[beforeConvert], let nonOptionalAfterConvert = unitInfo[AfterConvert] else {
+        return "입력하신 값을 확인해 주세요."
     }
+    
+    let convertedUnitValue = (numberPart / nonOptionalBeforeConvert) * nonOptionalAfterConvert
+    
+    return "\(convertedUnitValue)\(AfterConvert)"
 }
-
 
 while true {
-    if let valueAndUnit = readLine() {
-        if valueAndUnit == "quit" || valueAndUnit == "q" {
+    if let willConvertUnitValue = readLine() {
+        if willConvertUnitValue == "quit" || willConvertUnitValue == "q" {
             print("종료했습니다.")
             break
         } else {
-            print(convertUnit(valueAndUnit))
+            print(convertUnit(valueToConvert: willConvertUnitValue))
         }
     } else {
         print("입력하신 값을 확인해주세요.")
