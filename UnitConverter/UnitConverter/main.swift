@@ -50,10 +50,10 @@ func seperateInto(numberAndUnit:String) -> [String]{
     return [numberPart,unitPart]
 }
 
-//MARK: 단위 추가 (1/2)
+//MARK: 단위를 추가할때 수정 부분 있음(1/2)
 //ex) 입력: "cm" -> 출력: true, 입력: "hngfu" -> false
 func supports(unit:String) -> Bool{
-    let supportedUnits = ["cm","m","inch","yard","kg","g","oz","lb"]
+    let supportedUnits = ["cm","m","inch","yard","kg","g","oz","lb"]    //여기에 단위 추가
     return supportedUnits.contains(unit)
 }
 
@@ -71,10 +71,10 @@ func addDefaultUnit(unitBeforeConvert:String) -> String{
     }
 }
 
-//MARK: 단위 추가 (2/2) 단위값 추가시 '길이'는 'm'가 중심값, '무게'는 'kg'가 중심값
+//MARK: 단위를 추가할때 수정 부분 있음(2/2) '길이'는 'm'가 중심값, '무게'는 'kg'가 중심값
 //ex) 입력: (12,"cm","m") -> 출력: "0.12m", 입력: (12,"m","yard") -> 출력: "13.1233yard"
 func convertingUnit(_ numberPart:Double, _ beforeConvert:String, _ AfterConvert:String) -> String{
-    let unitInfo = ["cm" : 100,
+    let unitInfo = ["cm" : 100,                 //여기에 단위와 단위값 추가
                     "m" : 1.0,
                     "inch" : 39.370079,
                     "yard" : 1.093613,
@@ -83,12 +83,12 @@ func convertingUnit(_ numberPart:Double, _ beforeConvert:String, _ AfterConvert:
                     "oz" : 35.273962,
                     "lb" : 2.204623]
     
-    guard let nonOptionalBeforeConvert = unitInfo[beforeConvert], let nonOptionalAfterConvert = unitInfo[AfterConvert] else {
+    guard let nonOptionalBeforeConvert = unitInfo[beforeConvert],
+          let nonOptionalAfterConvert = unitInfo[AfterConvert] else {
         return "입력하신 값을 확인해 주세요."
     }
     
     let convertedUnitValue = (numberPart / nonOptionalBeforeConvert) * nonOptionalAfterConvert
-    
     return "\(convertedUnitValue)\(AfterConvert)"
 }
 
